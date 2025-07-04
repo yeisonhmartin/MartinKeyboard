@@ -1,0 +1,16 @@
+
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            bindings = <
+                &kp ESC    &kp 1     &kp 2     &kp 3     &kp 4
+                &kp TAB    &kp Q     &kp W     &kp E     &kp R
+                &kp CAPS   &kp A     &kp S     &kp D     &kp F
+                &kp LSFT   &kp Z     &kp X     &kp C     &kp V
+                &kp LCTL   &kp LALT  &kp SPC   &kp ENT   &kp BSPC
+            >;
+        };
+    };
+};

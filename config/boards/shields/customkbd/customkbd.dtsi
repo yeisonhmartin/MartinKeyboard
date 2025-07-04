@@ -1,0 +1,15 @@
+
+/ {
+    compatible = "zmk,keyboard-shield";
+
+    matrix_row_pins = <&pro_micro D1>, <&pro_micro D2>, <&pro_micro D3>,
+                      <&pro_micro D4>, <&pro_micro D5>, <&pro_micro D6>,
+                      <&pro_micro D7>, <&pro_micro E6>, <&pro_micro B2>,
+                      <&pro_micro B3>, <&pro_micro B1>, <&pro_micro F7>,
+                      <&pro_micro F6>, <&pro_micro F5>;
+
+    matrix_col_pins = <&pro_micro F4>, <&pro_micro F1>, <&pro_micro F0>,
+                      <&pro_micro D0>, <&pro_micro D3>;
+
+    diode_direction = <COL2ROW>;
+};
