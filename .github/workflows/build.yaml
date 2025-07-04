@@ -1,4 +1,3 @@
-
 name: Build ZMK Firmware
 
 on:
@@ -16,8 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Clone ZMK source
+        run: |
+          west init -m https://github.com/zmkfirmware/zmk.git
+          west update
+
       - name: Build firmware
         run: |
-          west init -l config
-          west update
           west build -s app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
