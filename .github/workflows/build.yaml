@@ -15,12 +15,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Initialize and fetch ZMK
+      - name: Configure Git credentials
         run: |
-          west init -m https://github.com/zmkfirmware/zmk.git zmk
+          git config --global url."https://github.com/".insteadOf git@github.com:
+          git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Initialize ZMK project from manifest
+        run: |
+          west init -m https://github.com/zmkfirmware/zmk-config.git
           west update
 
       - name: Build firmware
         run: |
           west build -s zmk/app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
+
 
