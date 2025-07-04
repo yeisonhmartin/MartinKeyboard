@@ -16,11 +16,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Initialize West workspace
+        run: |
+          west init -l zmk
+          west update
+
       - name: Build firmware
         run: |
-          west init -l zmk/app
-          west update
           west build -s zmk/app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
-
-
-
