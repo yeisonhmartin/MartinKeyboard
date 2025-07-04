@@ -2,8 +2,7 @@ name: Build ZMK Firmware
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
 
 jobs:
@@ -12,21 +11,16 @@ jobs:
     container:
       image: zmkfirmware/zmk-build-arm:3.0
     steps:
-      - name: Checkout repository
+      - name: Checkout repository with submodules
         uses: actions/checkout@v3
-
-      - name: Configure Git credentials
-        run: |
-          git config --global url."https://github.com/".insteadOf git@github.com:
-          git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
-      - name: Initialize ZMK project from manifest
-        run: |
-          west init -m https://github.com/zmkfirmware/zmk-config.git
-          west update
+        with:
+          submodules: recursive
 
       - name: Build firmware
         run: |
+          west init -l zmk/app
+          west update
           west build -s zmk/app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
+
 
 
