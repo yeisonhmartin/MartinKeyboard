@@ -1,0 +1,23 @@
+
+name: Build ZMK Firmware
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: zmkfirmware/zmk-build-arm:2.6
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build firmware
+        run: |
+          west init -l config
+          west update
+          west build -s app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
