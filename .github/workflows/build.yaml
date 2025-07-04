@@ -15,11 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Clone ZMK source
+      - name: Initialize West and clone ZMK
         run: |
-          west init -m https://github.com/zmkfirmware/zmk.git
+          west init -m https://github.com/zmkfirmware/zmk-config.git
           west update
 
       - name: Build firmware
         run: |
-          west build -s app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
+          west build -s zmk/app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
