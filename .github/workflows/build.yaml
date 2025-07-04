@@ -1,26 +1,5 @@
-name: Build ZMK Firmware
-
-on:
-  push:
-    branches: [main]
-  pull_request:
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container:
-      image: zmkfirmware/zmk-build-arm:3.0
-    steps:
-      - name: Checkout repository with submodules
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
-
-      - name: Initialize West workspace
-        run: |
-          west init -l zmk
-          west update
-
-      - name: Build firmware
-        run: |
-          west build -s zmk/app -d build/customkbd -- -DSHIELD=customkbd -DZMK_CONFIG=$(pwd)/config
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
