@@ -1,3 +1,3 @@
 compile:
   - keyboard: sofle/rev1        # ← Cambia esto por tu teclado
-    keymap: sofle           # ← Cambia esto por tu keymap
+    keymap: default           # ← Cambia esto por tu keymap
