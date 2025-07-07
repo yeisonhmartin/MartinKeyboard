@@ -1,0 +1,3 @@
+compile:
+  - keyboard: crkbd/rev1        # ← Cambia esto por tu teclado
+    keymap: mi_keymap           # ← Cambia esto por tu keymap
