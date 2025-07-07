@@ -2,34 +2,47 @@ name: QMK Build
 
 on:
   push:
-    branches: [main]  # ← Cambia si usas otra rama
+    branches: [main]  # Change if you use a different default branch
   pull_request:
-  workflow_dispatch:  # Permite ejecución manual desde la pestaña Actions
+  workflow_dispatch:  # Allows manual execution from the Actions tab
 
 jobs:
   qmk_build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clonar el repositorio
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Instalar dependencias
-      run: |
-        sudo apt update
-        sudo apt install -y python3 python3-pip git make gcc unzip
-        pip3 install qmk
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip git make gcc unzip
+          pip3 install --upgrade qmk
 
-    - name: Inicializar entorno QMK
-      run: |
-        qmk setup -y --home ${{ github.workspace }}/qmk_firmware
-        cd qmk_firmware
-        qmk doctor
+      - name: Setup QMK Firmware environment
+        run: |
+          if [ ! -d "qmk_firmware" ]; then
+            qmk setup -y --home "$GITHUB_WORKSPACE/qmk_firmware"
+          fi
+          cd qmk_firmware
+          qmk doctor
 
-    - name: Copiar build.yaml
-      run: cp ../build.yaml .
+      - name: Copy build.yaml to QMK folder
+        run: |
+          cp "$GITHUB_WORKSPACE/build.yaml" "$GITHUB_WORKSPACE/qmk_firmware/"
 
-    - name: Compilar teclado desde build.yaml
-      run: |
-        cd qmk_firmware
-        qmk compile --build-yaml build.yaml
+      - name: Compile keyboard from build.yaml
+        run: |
+          cd qmk_firmware
+          qmk compile --build-yaml build.yaml
+
+      - name: Upload firmware artifacts
+        if: success()  # Only run if previous steps succeeded
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: |
+            qmk_firmware/*.hex
+            qmk_firmware/*.bin
+            qmk_firmware/*.uf2
