@@ -2,7 +2,7 @@ name: QMK Build
 
 on:
   push:
-    branches: [main]  # Change if you use a different default branch
+    branches: [master]  # Change if you use a different default branch
   pull_request:
   workflow_dispatch:  # Allows manual execution from the Actions tab
 
