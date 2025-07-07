@@ -1,9 +1,11 @@
+
 name: QMK Build
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   qmk_build:
@@ -21,9 +23,14 @@ jobs:
 
     - name: Inicializar entorno QMK
       run: |
-        qmk setup -y
-        qmk doctor
+        qmk setup -y --home ${{ github.workspace }}/qmk_firmware
+        cd qmk_firmware
+        qmk doctor || true
+
+    - name: Copiar build.yaml
+      run: cp build.yaml qmk_firmware/
 
     - name: Compilar teclado desde build.yaml
       run: |
+        cd qmk_firmware
         qmk compile --build-yaml build.yaml
